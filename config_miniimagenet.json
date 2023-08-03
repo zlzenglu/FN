@@ -1,0 +1,75 @@
+{
+    "name": "mini_resnet50mini ",
+    "seed":123,
+    "feature_noise_rate":0.1,
+
+    "arch": {
+        "type": "resnet50mini",
+        "args": {"num_classes":2}
+    },
+
+    "method":"ce",
+
+    "num_classes": 2,
+
+    "data_loader": {
+        "type": "MINIDataLoader",
+        "args":{
+            "data_dir": "./dir/to/data",
+            "batch_size": 128,
+            "num_batches": 0,
+            "shuffle": true,
+            "validation_split": 0.1,
+            "num_workers": 0,
+            "pin_memory": true
+        }
+    },
+
+
+    "optimizer": {
+        "type": "SGD",
+        "args":{
+            "lr": 0.02,
+            "momentum": 0.9,
+            "weight_decay": 5e-4
+        }
+    },
+
+    "train_loss":"cross_entropy",
+    "val_loss": "cross_entropy",
+
+
+    "metrics": [
+        "my_metric"
+    ],
+
+    "lr_scheduler": {
+        "type": "MultiStepLR",
+        "args": { 
+            "milestones": [100],
+            "gamma": 0.1
+        }
+    },
+
+    "trainer": {
+        "epochs": 200,
+        "warmup": 0,
+        "save_dir": "./dir/to/model",
+        "save_period": 100,
+        "verbosity": 2,
+        "label_dir": "saved/",
+        "num_classes":2,
+        "gray":false,
+        
+        "monitor": "min loss",
+        "early_stop": 1000,
+
+        "tensorboard": false,
+        "mlflow": false,
+
+        "_percent": "Percentage of noise",
+        "percent": 0.8,
+        "_asym": "symmetric noise if false",
+        "asym": false
+    }
+}
